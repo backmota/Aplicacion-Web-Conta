@@ -1,5 +1,8 @@
 Instrucciones para instalar el CMS de Facturascripts
 
+-IMPORTANTE!!!
+	Es necesario instalar la base de datos que se encuentra en la carpeta BASE DE DATOS
+
 
 __facturascripts__ es un software de facturación para pymes,
 fácil, libre y con actualizaciones constantes.
