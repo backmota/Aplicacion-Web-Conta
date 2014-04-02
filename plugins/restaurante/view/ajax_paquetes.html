@@ -1,0 +1,31 @@
+<!--{$fsc->query}-->
+
+{if condition="$fsc->get_errors()"}
+   <div class="error">
+      {loop="$fsc->get_errors()"}<li>{$value}</li>{/loop}
+   </div>
+{/if}
+{if condition="$fsc->get_messages()"}
+   <div class="message">
+      {loop="$fsc->get_messages()"}<li>{$value}</li>{/loop}
+   </div>
+{/if}
+
+{if condition="$fsc->results"}
+<table class="list">
+   <tr>
+      <th>Referencia</th>
+      <th>Descripción</th>
+      <th align="right">PVP+IVA</th>
+   </tr>
+   {loop="$fsc->results"}
+   <tr>
+      <td><a class="link" href="{$fsc->cache_paquete->add_url($value->referencia)}">{$value->referencia}</a></td>
+      <td>{$value->descripcion}</td>
+      <td align="right">
+         <span title="actualizado el {$value->factualizado}">{$fsc->show_precio($value->pvp_iva())}</span>
+      </td>
+   </tr>
+   {/loop}
+</table>
+{/if}

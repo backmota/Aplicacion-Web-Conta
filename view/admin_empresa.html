@@ -1,0 +1,249 @@
+{include="header"}
+
+<script type="text/javascript">
+   $(document).ready(function() {
+      $("#b_mail_options").click(function(event) {
+         event.preventDefault();
+         fs_show_popup('popup_mail_options');
+         document.f_empresa.mail_host.select();
+      });
+      $("#b_add_logo").click(function(event) {
+         fs_show_popup('popup_logo');
+      });
+   });
+</script>
+
+<form name="f_empresa" action="{$fsc->page->url()}" method="POST">
+   <div class="rounded">
+      <h1>
+         Datos generales:
+         <span>
+            <input class="submit" type="submit" value="guardar" onclick="this.disabled=true;this.form.submit();"/>
+         </span>
+      </h1>
+      <div class="bloque">
+         Nombre:
+         <input type="text" name="nombre" size="60" value="{$fsc->empresa->nombre}" autocomplete="off"/>
+      </div>
+      <div class="bloque">
+         cif/nif:
+         <input type="text" name="cifnif" size="12" value="{$fsc->empresa->cifnif}" autocomplete="off"/>
+      </div>
+      <div class="bloque">
+         administrador:
+         <input type="text" name="administrador" size="60" value="{$fsc->empresa->administrador}" autocomplete="off"/>
+      </div>
+      <br/>
+      <div class="bloque">
+         <a class="link" href="{$fsc->pais->url()}">País</a>:
+         <select name="codpais">
+         {loop="$fsc->pais->all()"}
+            {if condition="$fsc->empresa->codpais == $value->codpais"}
+               <option value="{$value->codpais}" selected="selected">{$value->nombre}</option>
+            {else}
+               <option value="{$value->codpais}">{$value->nombre}</option>
+            {/if}
+         {/loop}
+         </select>
+      </div>
+      <div class="bloque">
+         provincia:
+         <input type="text" name="provincia" size="20" value="{$fsc->empresa->provincia}" autocomplete="off"/>
+      </div>
+      <div class="bloque">
+         ciudad:
+         <input type="text" name="ciudad" size="20" value="{$fsc->empresa->ciudad}" autocomplete="off"/>
+      </div>
+      <div class="bloque">
+         dirección:
+         <input type="text" name="direccion" size="60" value="{$fsc->empresa->direccion}" autocomplete="off"/>
+      </div>
+      <div class="bloque">
+         código postal:
+         <input type="text" name="codpostal" size="6" value="{$fsc->empresa->codpostal}" autocomplete="off"/>
+      </div>
+      <br/>
+      <div class="bloque">
+         Teléfono:
+         <input type="text" name="telefono" size="12" value="{$fsc->empresa->telefono}" autocomplete="off"/>
+      </div>
+      <div class="bloque">
+         fax:
+         <input type="text" name="fax" size="12" value="{$fsc->empresa->fax}" autocomplete="off"/>
+      </div>
+      <div class="bloque">
+         Web:
+         <input type="text" name="web" size="50" value="{$fsc->empresa->web}" autocomplete="off"/>
+      </div>
+      <br/>
+      <div class="bloque">
+         {if condition="$fsc->empresa->contintegrada"}
+            <input type="checkbox" name="contintegrada" id="contintegrada" value="TRUE" checked="checked"/>
+         {else}
+            <input type="checkbox" name="contintegrada" id="contintegrada" value="TRUE"/>
+         {/if}
+         <label for="contintegrada">Contabilidad integrada</label>
+      </div>
+      <div class="bloque">
+         <a class="link" href="{$fsc->ejercicio->url()}">Ejercicio</a>:
+         <select name="codejercicio">
+         {loop="$fsc->ejercicio->all()"}
+            {if condition="$fsc->empresa->codejercicio == $value->codejercicio"}
+               <option value="{$value->codejercicio}" selected="selected">{$value->nombre}</option>
+            {else}
+               <option value="{$value->codejercicio}">{$value->nombre}</option>
+            {/if}
+         {/loop}
+         </select>
+      </div>
+      <div class="bloque">
+         <a class="link" href="{$fsc->serie->url()}">Serie</a>:
+         <select name="codserie">
+         {loop="$fsc->serie->all()"}
+            {if condition="$fsc->empresa->codserie == $value->codserie"}
+               <option value="{$value->codserie}" selected="selected">{$value->descripcion}</option>
+            {else}
+               <option value="{$value->codserie}">{$value->descripcion}</option>
+            {/if}
+         {/loop}
+         </select>
+      </div>
+      <div class="bloque">
+         Forma de pago:
+         <select name="codpago">
+         {loop="$fsc->forma_pago->all()"}
+            {if condition="$fsc->empresa->codpago == $value->codpago"}
+               <option value="{$value->codpago}" selected="selected">{$value->descripcion}</option>
+            {else}
+               <option value="{$value->codpago}">{$value->descripcion}</option>
+            {/if}
+         {/loop}
+         </select>
+      </div>
+      <div class="bloque">
+         Divisa:
+         <select name="coddivisa">
+         {loop="$fsc->divisa->all()"}
+            {if condition="$fsc->empresa->coddivisa == $value->coddivisa"}
+               <option value="{$value->coddivisa}" selected="selected">{$value->descripcion}</option>
+            {else}
+               <option value="{$value->coddivisa}">{$value->descripcion}</option>
+            {/if}
+         {/loop}
+         </select>
+      </div>
+      <div class="bloque">
+         <a class="link" href="{$fsc->almacen->url()}">Almacén</a>:
+         <select name="codalmacen">
+         {loop="$fsc->almacen->all()"}
+            {if condition="$fsc->empresa->codalmacen == $value->codalmacen"}
+               <option value="{$value->codalmacen}" selected="selected">{$value->nombre}</option>
+            {else}
+               <option value="{$value->codalmacen}">{$value->nombre}</option>
+            {/if}
+         {/loop}
+         </select>
+      </div>
+   </div>
+   
+   <div class="rounded">
+      <h1>Email:</h1>
+      <div>
+         Email:
+         <input type="text" name="email" size="30" value="{$fsc->empresa->email}" autocomplete="off"/>
+         <input type="password" name="email_password" size="20" value="{$fsc->empresa->email_password}" placeholder="contraseña"/>
+         Si no usas Gmail o Google Apps, haz clic <a id="b_mail_options" class="link" href="#">aquí</a>.
+      </div>
+      <div>
+         <br/>Firma:<br/>
+         <textarea name="email_firma">{$fsc->empresa->email_firma}</textarea>
+      </div>
+   </div>
+   
+   <div class="popup" id="popup_mail_options">
+      <h1>Opciones de email</h1>
+      <table>
+         <tr>
+            <td align="right"><b>Host:</b></td>
+            <td><input type="text" name="mail_host" size="30" value="{$fsc->mail['mail_host']}" autocomplete="off"/></td>
+         </tr>
+         <tr>
+            <td align="right"><b>Puerto:</b></td>
+            <td><input type="text" name="mail_port" size="30" value="{$fsc->mail['mail_port']}" autocomplete="off"/></td>
+         </tr>
+         <tr>
+            <td align="right"><b>Encriptación (ssl ó tls):</b></td>
+            <td><input type="text" name="mail_enc" size="30" value="{$fsc->mail['mail_enc']}" autocomplete="off"/></td>
+         </tr>
+         <tr>
+            <td align="right"><b>Usuario:</b></td>
+            <td><input type="text" name="mail_user" size="30" value="{$fsc->mail['mail_user']}" autocomplete="off"/></td>
+         </tr>
+         <tr>
+            <td colspan="2" align="right">
+               <input class="submit" type="submit" value="guardar" onclick="this.disabled=true;this.form.submit();"/>
+            </td>
+         </tr>
+      </table>
+   </div>
+   
+   <div class="rounded">
+      <h1>Facturas:</h1>
+      <div class="bloque">
+         <a id="b_add_logo" class="button" href="#">Añadir logotipo</a>
+      </div>
+      <div class="bloque">
+         Pie de página:
+         <input type="text" name="pie_factura" size="80" maxlength="255" value="{$fsc->empresa->pie_factura}" autocomplete="off"/>
+      </div>
+   </div>
+   
+   <div class="rounded">
+      <h1>Tickets:</h1>
+      <div class="bloque">
+         Lema:
+         <input type="text" name="lema" size="30" maxlength="50" value="{$fsc->empresa->lema}" autocomplete="off"/>
+      </div>
+      <div class="bloque">
+         Horario:
+         <input type="text" name="horario" size="50" maxlength="100" value="{$fsc->empresa->horario}" autocomplete="off"/>
+      </div>
+   </div>
+</form>
+
+<div class="popup" id="popup_logo">
+   <h1>Logotipo para las facturas</h1>
+   <form enctype='multipart/form-data' action="{$fsc->url()}" method="post">
+      <input name='logo' type='hidden' value='TRUE'/>
+      <table>
+         <tr>
+            <td colspan="2" align="center">
+               {if condition="$fsc->logo"}
+               <img src="tmp/logo.png" alt="logotipo"/>
+               {else}
+               No hay ningún logotipo
+               {/if}
+            </td>
+         </tr>
+         <tr>
+            <td align="right">
+               <input name='fimagen' type='file'/>
+            </td>
+            <td align="left">
+               La imagen debe estar en formato PNG.
+            </td>
+         </tr>
+         <tr><td colspan="2"><br/></td></tr>
+         <tr>
+            <td>
+               <a class="delete" href="{$fsc->url()}&delete_logo=TRUE">Eliminar</a>
+            </td>
+            <td align="right">
+               <input class="submit" type="submit" value="guardar"/>
+            </td>
+         </tr>
+      </table>
+   </form>
+</div>
+
+{include="footer"}

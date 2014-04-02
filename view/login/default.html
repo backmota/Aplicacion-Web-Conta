@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <title>{$fsc->empresa->nombre}</title>
+   <meta name="description" content="Facturación y contabilidad fácil, libre y con actualizaciones constantes.
+         Es software libre bajo licencia GNU/AGPL." />
+   <meta name="keywords" content="facturascripts, facturación, contabilidad, abanq, eneboo, facturalux, facturaplus"/>
+   <link rel="shortcut icon" href="view/img/favicon.ico" />
+   <link rel="stylesheet" type="text/css" href="view/login/login.css" />
+   <script type="text/javascript" src="view/js/jquery.js"></script>
+   <script type="text/javascript">
+{if condition="$demo"}
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-417932-8']);
+      _gaq.push(['_trackPageview']);
+      (function() {
+         var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+         ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+{/if}
+      $(document).ready(function() {
+         {if condition="$demo"}
+         document.f_login.user.focus();
+         {else}
+         document.f_login.password.focus();
+         {/if}
+         {if condition="!$demo"}
+         $("#b_new_password").click(function() {
+            $("#popup_new_password").show();
+         });
+         {/if}
+         $("#b_feedback").click(function() {
+            $("#b_feedback").hide();
+            $("#popup_feedback").show();
+            document.feedback.feedback_text.focus();
+         });
+         $("#b_sql").click(function() {
+            $("#b_sql").hide();
+            $("#popup_sql").show();
+         });
+      });
+   </script>
+</head>
+<body>
+   {if condition="$fsc->get_errors()"}
+      <div class="error">
+         <ul>{loop="$fsc->get_errors()"}<li>{$value}</li>{/loop}</ul>
+      </div>
+   {/if}
+   {if condition="$fsc->get_messages()"}
+      <div class="message">
+         <ul>{loop="$fsc->get_messages()"}<li>{$value}</li>{/loop}</ul>
+      </div>
+   {/if}
+   
+   <div class="header">
+      <h1><a href="index.php">{$fsc->empresa->nombre}</a></h1>
+      
+      {if condition="$nlogin"}
+         <h2>¡Hola {$nlogin}! Bienvenid@ a FacturaScripts {$fsc->version()}</h2>
+         Si no eres {$nlogin} ignora este saludo.
+      {else}
+         <h2>¡Hola! Bienvenid@ a FacturaScripts {$fsc->version()}</h2>
+      {/if}
+      
+      <br/>
+      
+      <div class="popup">
+         {if condition="$demo"}
+            <div style="text-align: center;">Escribe tu nombre y entra.</div>
+            <br/>
+            <form name="f_login" action="index.php?nlogin={$nlogin}" method="post">
+               <input type="text" class="full" name="user" maxlength="12" placeholder="Escribe tu nombre" autocomplete="off"/>
+               <input type="hidden" name="password" value="demo"/>
+               <br/>
+               <input type="submit" class="full" value="entrar"/>
+            </form>
+         {else}
+            <form name="f_login" action="index.php?nlogin={$nlogin}" method="post">
+               <select name="user" onchange="document.f_login.password.focus()">
+               {loop name="$fsc->user->all()"}
+                  {if condition="$value->nick == $nlogin"}
+                  <option value="{$value->nick}" selected>{$value->nick}</option>
+                  {else}
+                  <option value="{$value->nick}">{$value->nick}</option>
+                  {/if}
+               {/loop}
+               </select>
+               <input type="password" name="password" maxlength="20" placeholder="contraseña"/>
+               <a id="b_new_password" class="link" href="#new_password">¿Has olvidado la contraseña?</a>
+               <br/><br/>
+               <input type="submit" class="full" value="entrar"/>
+            </form>
+         {/if}
+      </div>
+      
+      <p>
+         Consultas: {$fsc->selects()}, Transacciones: {$fsc->transactions()},
+         Procesado en: {$fsc->duration()}
+      </p>
+   </div>
+   
+   <div class="bottom_frame">
+      <a id="b_feedback" href="#feedback">Ayuda</a>
+      <a id="b_news" target="_blank" href="http://www.facturascripts.com/community/item/facturascripts-2014-3-ya-esta-listo-novedades-ya-se-puede-personalizar-698.html">Novedades</a>
+      {if condition="$db_history"}<a id="b_sql" href="#sql">SQL</a>{/if}
+   </div>
+   
+   {if condition="!$demo"}
+   <a name="new_password"></a>
+   <div class="popup" id="popup_new_password" style="display: none;">
+      <h1>¿Has olvidado la contraseña?</h1>
+      <form action="index.php" method="post">
+         <select name="user" onchange="document.f_login.password.focus()">
+            {loop name="$fsc->user->all()"}
+               {if condition="$value->nick == $nlogin"}
+               <option value="{$value->nick}" selected>{$value->nick}</option>
+               {else}
+               <option value="{$value->nick}">{$value->nick}</option>
+               {/if}
+            {/loop}
+         </select>
+         <input type="password" name="new_password" maxlength="20" placeholder="nueva contraseña"/>
+         <input type="password" name="new_password2" maxlength="20" placeholder="repite la nueva contraseña"/>
+         <input type="password" name="db_password" maxlength="20" placeholder="contraseña de la base de datos"/>
+         <br/>
+         <input type="submit" class="full" value="cambiar"/>
+      </form>
+   </div>
+   <br/>
+   {/if}
+   
+   <a name="feedback"></a>
+   {include="feedback"}
+   <br/>
+   
+   {if condition="$db_history"}
+   <a name="sql"></a>
+   <div class="popup" id="popup_sql" style="display: none;">
+      <h1>Consultas SQL:</h1>
+      <ol>{loop="$fsc->get_db_history()"}<li>{$value}</li>{/loop}</ol>
+   </div>
+   {/if}
+</body>
+</html>

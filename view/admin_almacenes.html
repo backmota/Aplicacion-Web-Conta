@@ -1,0 +1,133 @@
+{include="header"}
+
+<script type="text/javascript">
+   function delete_almacen(url)
+   {
+      if( confirm("¿Realmente desea eliminar este almacén?") )
+         window.location.href = url;
+   }
+   $(document).ready(function() {
+      $("#b_nuevo_almacen").click(function(event) {
+         event.preventDefault();
+         fs_show_popup('popup_nuevo_almacen');
+         document.f_nuevo_almacen.scodalmacen.focus();
+      });
+   });
+</script>
+
+<div class="popup" id="popup_nuevo_almacen">
+   <h1>Nuevo almacén</h1>
+   <form name="f_nuevo_almacen" action="{$fsc->url()}" method="post">
+      <table>
+         <tr>
+            <td align="right">Código:</td>
+            <td><input type="text" name="scodalmacen" size="4" maxlength="4" autocomplete="off"/></td>
+         </tr>
+         <tr>
+            <td align="right">Nombre:</td>
+            <td><input type="text" name="snombre" autocomplete="off"/></td>
+         </tr>
+         <tr>
+            <td align="right"><a class="link" href="{$fsc->pais->url()}">País</a>:</td>
+            <td>
+               <select name="scodpais">
+                  {loop="$fsc->pais->all()"}
+                     <option value="{$value->codpais}"{if condition="$value->is_default()"} selected="selected"{/if}>{$value->nombre}</option>
+                  {/loop}
+               </select>
+            </td>
+         </tr>
+         <tr>
+            <td align="right">Provincia:</td>
+            <td><input type="text" name="sprovincia" autocomplete="off" value="{$fsc->empresa->provincia}"/></td>
+         </tr>
+         <tr>
+            <td align="right">Ciudad:</td>
+            <td><input type="text" name="spoblacion" autocomplete="off" value="{$fsc->empresa->ciudad}"/></td>
+         </tr>
+         <tr>
+            <td align="right">Dirección:</td>
+            <td><input type="text" name="sdireccion" autocomplete="off"/></td>
+         </tr>
+         <tr>
+            <td align="right">Código postal:</td>
+            <td><input type="text" name="scodpostal" autocomplete="off" value="{$fsc->empresa->codpostal}"/></td>
+         </tr>
+         <tr>
+            <td align="right">Teléfono:</td>
+            <td><input type="text" name="stelefono" autocomplete="off"/></td>
+         </tr>
+         <tr>
+            <td align="right">Fax:</td>
+            <td><input type="text" name="sfax" autocomplete="off"/></td>
+         </tr>
+         <tr>
+            <td align="right">Contacto:</td>
+            <td><input type="text" name="scontacto" autocomplete="off"/></td>
+         </tr>
+         <tr>
+            <td colspan="2" align="right">
+               <input class="submit" type="submit" value="guardar" onclick="this.disabled=true;this.form.submit();"/>
+            </td>
+         </tr>
+      </table>
+   </form>
+</div>
+
+{loop="$fsc->almacen->all()"}
+<div class="rounded">
+   <form action="{$fsc->url()}" method="POST">
+      <input type="hidden" name="scodalmacen" value="{$value->codalmacen}"/>
+      <h1>Código: {$value->codalmacen}</h1>
+      <div class="bloque">
+         Nombre: <input type="text" name="snombre" value="{$value->nombre}" autocomplete="off"/>
+      </div>
+      <div class="bloque">
+         <a class="link" href="{$fsc->pais->url()}">País</a>:
+         <select name="scodpais">
+         {loop="$fsc->pais->all()"}
+            {if condition="$value1->codpais == $value2->codpais"}
+               <option value="{$value2->codpais}" selected="selected">{$value2->nombre}</option>
+            {else}
+               <option value="{$value2->codpais}">{$value2->nombre}</option>
+            {/if}
+         {/loop}
+         </select>
+      </div>
+      <div class="bloque">
+         Provincia:
+         <input type="text" name="sprovincia" size="20" value="{$value->provincia}" autocomplete="off"/>
+      </div>
+      <div class="bloque">
+         Ciudad: <input type="text" name="spoblacion" size="20" value="{$value->poblacion}" autocomplete="off"/>
+      </div>
+      <div class="bloque">
+         Dirección: <input type="text" name="sdireccion" size="60" value="{$value->direccion}" autocomplete="off"/>
+      </div>
+      <div class="bloque">
+         Código postal: <input type="text" name="scodpostal" value="{$value->codpostal}" size="6" autocomplete="off"/>
+      </div>
+      <div class="bloque">
+         Teléfono: <input type="text" name="stelefono" value="{$value->telefono}" size="9" autocomplete="off"/>
+      </div>
+      <div class="bloque">
+         Fax: <input type="text" name="sfax" value="{$value->fax}" size="9" autocomplete="off"/>
+      </div>
+      <div class="bloque">
+         Contacto: <input type="text" name="scontacto" value="{$value->contacto}" autocomplete="off"/>
+      </div>
+      <div>
+         <a class="delete" href="#" onclick="delete_almacen('{$fsc->url()}&delete={$value->codalmacen}')">eliminar</a>
+         <input class="pull_right submit" type="submit" value="guardar" onclick="this.disabled=true;this.form.submit();"/>
+      </div>
+   </form>
+</div>
+{/loop}
+
+<div class="rounded">
+   <div class="new_line">
+      <a id="b_nuevo_almacen" href="#">Nuevo almacén</a>
+   </div>
+</div>
+
+{include="footer"}
